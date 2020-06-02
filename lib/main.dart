@@ -25,8 +25,7 @@ class MyApp extends StatelessWidget {
         ),
         home: ProductsOverviewScreen(),
         routes: {
-          ProductDetailsScreen.routeName: (context) =>
-              ProductDetailsScreen(title: 'jeelo'),
+          ProductDetailsScreen.routeName: (context) => ProductDetailsScreen(),
         },
       ),
     );
