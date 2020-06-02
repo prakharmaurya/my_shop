@@ -20,10 +20,9 @@ class ProductsGrid extends StatelessWidget {
         mainAxisSpacing: 10,
       ),
       itemBuilder: (context, index) {
-        return ProductItem(
-          id: products[index].id,
-          title: products[index].title,
-          imageUrl: products[index].imageUrl,
+        return ChangeNotifierProvider.value(
+          value: products[index],
+          child: ProductItem(),
         );
       },
       itemCount: products.length,
