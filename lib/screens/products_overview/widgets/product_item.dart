@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../product_details/product_details_screen.dart';
 
 class ProductItem extends StatelessWidget {
   final String id;
@@ -21,7 +22,10 @@ class ProductItem extends StatelessWidget {
           backgroundColor: Colors.black87,
           leading: IconButton(
             icon: Icon(Icons.favorite),
-            onPressed: () {},
+            onPressed: () {
+              return Navigator.of(context)
+                  .pushNamed(ProductDetailsScreen.routeName, arguments: id);
+            },
             color: Theme.of(context).accentColor,
           ),
           title: Text(
