@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../models/product.dart';
+import '../../providers/products_provider.dart';
 
 class EditProductScreen extends StatefulWidget {
   static const routeName = '/edit-product';
@@ -40,8 +42,15 @@ class _EditProductScreenState extends State<EditProductScreen> {
   }
 
   void _saveForm() {
+    final isValid = _form.currentState.validate();
+    if (!isValid) {
+      return;
+    }
     _form.currentState.save();
-    print(_editedProduct);
+    //print(_editedProduct);
+    Provider.of<ProductsProvider>(context, listen: false)
+        .addProduct(_editedProduct);
+    Navigator.of(context).pop();
   }
 
   @override
@@ -66,6 +75,12 @@ class _EditProductScreenState extends State<EditProductScreen> {
                 decoration: InputDecoration(
                   labelText: 'Title',
                 ),
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return 'Please enter a title';
+                  }
+                  return null;
+                },
                 textInputAction: TextInputAction.next,
                 onFieldSubmitted: (_) {
                   FocusScope.of(context).requestFocus(_priceFoucsNode);
@@ -87,6 +102,18 @@ class _EditProductScreenState extends State<EditProductScreen> {
                 textInputAction: TextInputAction.next,
                 keyboardType: TextInputType.number,
                 focusNode: _priceFoucsNode,
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return 'Please enter a price';
+                  }
+                  if (double.tryParse(value) == null) {
+                    return 'Please enter a valid number';
+                  }
+                  if (double.parse(value) < 0.0) {
+                    return 'Please enter a no. greater than zero';
+                  }
+                  return null;
+                },
                 onFieldSubmitted: (_) {
                   FocusScope.of(context).requestFocus(_descFoucsNode);
                 },
@@ -107,6 +134,15 @@ class _EditProductScreenState extends State<EditProductScreen> {
                 maxLines: 3,
                 keyboardType: TextInputType.multiline,
                 focusNode: _descFoucsNode,
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return 'Please enter a description';
+                  }
+                  if (value.length < 10) {
+                    return 'Please enter at least 10 characters';
+                  }
+                  return null;
+                },
                 onSaved: (value) {
                   _editedProduct = Product(
                     title: _editedProduct.title,
@@ -153,6 +189,16 @@ class _EditProductScreenState extends State<EditProductScreen> {
                       focusNode: _imageUrlFoucsNode,
                       onFieldSubmitted: (_) {
                         _saveForm();
+                      },
+                      validator: (value) {
+                        if (value.isEmpty) {
+                          return 'Please enter a URL';
+                        }
+                        if (!value.startsWith('http') ||
+                            !value.startsWith('https')) {
+                          return 'Please enter a valid URL';
+                        }
+                        return null;
                       },
                       onSaved: (value) {
                         _editedProduct = Product(
