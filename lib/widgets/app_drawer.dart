@@ -43,8 +43,8 @@ class AppDrawer extends StatelessWidget {
           ),
           Divider(),
           ListTile(
-            leading: Icon(Icons.shopping_cart),
-            title: Text('Add Products'),
+            leading: Icon(Icons.edit),
+            title: Text('Manage Products'),
             onTap: () {
               Navigator.of(context).pushNamed(UserProductsScreen.routeName);
             },
