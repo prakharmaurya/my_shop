@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../models/product.dart';
 import '../../product_details/product_details_screen.dart';
+import '../../../models/product.dart';
+import '../../../providers/cart_provider.dart';
 
 class ProductItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final product = Provider.of<Product>(context, listen: false);
+    final cart = Provider.of<CartProvider>(context, listen: false);
     return GestureDetector(
       onTap: () {
         return Navigator.of(context)
@@ -36,7 +38,9 @@ class ProductItem extends StatelessWidget {
             ),
             trailing: IconButton(
               icon: Icon(Icons.shopping_cart),
-              onPressed: () {},
+              onPressed: () {
+                cart.addItem(product.id, product.price, product.title);
+              },
               color: Theme.of(context).accentColor,
             ),
           ),
