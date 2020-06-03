@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../screens/orders_screen/oreders_screen.dart';
 import '../screens/cart_screen/cart_screen.dart';
+import '../screens/user_product_screen/user_product_screen.dart';
 
 class AppDrawer extends StatelessWidget {
   const AppDrawer({Key key}) : super(key: key);
@@ -38,6 +39,14 @@ class AppDrawer extends StatelessWidget {
             title: Text('Cart'),
             onTap: () {
               Navigator.of(context).pushNamed(CartScreen.routeName);
+            },
+          ),
+          Divider(),
+          ListTile(
+            leading: Icon(Icons.shopping_cart),
+            title: Text('Add Products'),
+            onTap: () {
+              Navigator.of(context).pushNamed(UserProductScreen.routeName);
             },
           ),
           Divider(),
