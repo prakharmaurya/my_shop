@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class UserProductScreen extends StatelessWidget {
+class UserProductsScreen extends StatelessWidget {
   static const routeName = '/user-product';
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('User Product'),
+        title: Text('Your Products'),
       ),
     );
   }
