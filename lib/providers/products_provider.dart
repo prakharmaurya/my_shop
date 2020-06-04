@@ -5,10 +5,10 @@ import '../models/product.dart';
 class ProductsProvider with ChangeNotifier {
   List<Product> _items = [
     Product(
-      id: 'p1',
+      id: 'p3',
       title: 'Red Shirt',
-      description: 'A red shirt - it is pretty red!',
-      price: 29.99,
+      description: 'A red shirt - it is pretty',
+      price: 30.00,
       imageUrl:
           'https://cdn.pixabay.com/photo/2016/10/02/22/17/red-t-shirt-1710578_1280.jpg',
     ),
@@ -48,9 +48,14 @@ class ProductsProvider with ChangeNotifier {
 
   void updateProduct(String id, Product newProduct) {
     final prodIndex = _items.indexWhere((prod) => prod.id == id);
-    if (prodIndex > 0) {
+    if (prodIndex >= 0) {
       _items[prodIndex] = newProduct;
       notifyListeners();
     }
+  }
+
+  void deleteProduct(String id) {
+    _items.removeWhere((prod) => prod.id == id);
+    notifyListeners();
   }
 }
