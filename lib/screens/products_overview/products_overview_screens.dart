@@ -43,6 +43,10 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
         setState(() {
           _isLoading = false;
         });
+      }).catchError((_) {
+        setState(() {
+          _isLoading = false;
+        });
       });
     }
     _isInit = false;
