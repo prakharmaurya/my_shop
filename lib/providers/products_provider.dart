@@ -6,24 +6,9 @@ import 'package:http/http.dart' as http;
 import '../models/product.dart';
 
 class ProductsProvider with ChangeNotifier {
-  List<Product> _items = [
-    Product(
-      id: 'p3',
-      title: 'Red Shirt',
-      description: 'A red shirt - it is pretty',
-      price: 30.00,
-      imageUrl:
-          'https://cdn.pixabay.com/photo/2016/10/02/22/17/red-t-shirt-1710578_1280.jpg',
-    ),
-    Product(
-      id: 'p2',
-      title: 'Trousers',
-      description: 'A nice pair of trousers.',
-      price: 59.99,
-      imageUrl:
-          'https://image.shutterstock.com/image-photo/girls-beautiful-yellow-skinny-trousers-600w-712737529.jpg',
-    ),
-  ];
+  List<Product> _items = [];
+
+  static const url = 'https://shop-app-f3190.firebaseio.com/products.json';
 
   List<Product> get items {
     return [..._items];
@@ -37,8 +22,30 @@ class ProductsProvider with ChangeNotifier {
     return items.firstWhere((prod) => prod.id == id);
   }
 
+  Future<void> fetchAndSetProducts() async {
+    try {
+      final res = await http.get(url);
+      final extractedData = json.decode(res.body) as Map<String, dynamic>;
+      final List<Product> loadedProducts = [];
+      extractedData.forEach((prodId, prodData) {
+        loadedProducts.add(
+          Product(
+            id: prodId,
+            title: prodData['title'],
+            description: prodData['description'],
+            price: prodData['price'],
+            imageUrl: prodData['imageUrl'],
+          ),
+        );
+      });
+      _items = loadedProducts;
+      notifyListeners();
+    } catch (err) {
+      throw err;
+    }
+  }
+
   Future<void> addProduct(Product product) async {
-    final url = 'https://shop-app-f3190.firebaseio.com/products.json';
     try {
       final res = await http.post(
         url,
