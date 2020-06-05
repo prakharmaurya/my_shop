@@ -30,6 +30,7 @@ class MyApp extends StatelessWidget {
           update: (ctx, authData, previousProducts) => ProductsProvider(
             authData.token,
             previousProducts == null ? [] : previousProducts.items,
+            authData.uid,
           ),
           create: (_) {
             return;

@@ -9,7 +9,7 @@ class Product with ChangeNotifier {
   final String description;
   final double price;
   final String imageUrl;
-  bool isFavorite = false;
+  bool isFavourite = false;
 
   Product({
     @required this.id,
@@ -17,26 +17,26 @@ class Product with ChangeNotifier {
     @required this.description,
     @required this.price,
     @required this.imageUrl,
-    this.isFavorite = false,
+    this.isFavourite = false,
   });
 
-  void toggleFavoriteStatus(String token) async {
-    final oldStatus = isFavorite;
-    isFavorite = !isFavorite;
+  void toggleFavoriteStatus(String token, String uid) async {
+    final oldStatus = isFavourite;
+    isFavourite = !isFavourite;
     notifyListeners();
     final url =
-        'https://shop-app-f3190.firebaseio.com/products/$id.json?auth=$token';
+        'https://shop-app-f3190.firebaseio.com/users/$uid/userFavourites/$id.json?auth=$token';
     try {
-      final res = await http.patch(
+      final res = await http.put(
         url,
-        body: json.encode({'isFavorite': isFavorite}),
+        body: json.encode(isFavourite),
       );
       if (res.statusCode >= 400) {
-        isFavorite = oldStatus;
+        isFavourite = oldStatus;
         notifyListeners();
       }
     } catch (err) {
-      isFavorite = oldStatus;
+      isFavourite = oldStatus;
       notifyListeners();
     }
   }

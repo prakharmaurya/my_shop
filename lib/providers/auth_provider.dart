@@ -14,6 +14,10 @@ class AuthProvider with ChangeNotifier {
     return this.token != null;
   }
 
+  String get uid {
+    return _userId;
+  }
+
   String get token {
     if (_expiryDate != null &&
         _expiryDate.isAfter(DateTime.now()) &&
@@ -41,7 +45,7 @@ class AuthProvider with ChangeNotifier {
         throw HttpException(responseData['error']['message']);
       }
       _token = responseData['idToken'];
-      _userId = responseData['loaclId'];
+      _userId = responseData['localId'];
       _expiryDate = DateTime.now()
           .add(Duration(seconds: int.parse(responseData['expiresIn'])));
       notifyListeners();
