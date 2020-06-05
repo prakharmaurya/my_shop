@@ -70,8 +70,6 @@ class MyApp extends StatelessWidget {
                           : AuthScreen(),
                 ),
           routes: {
-            ProductsOverviewScreen.routeName: (context) =>
-                ProductsOverviewScreen(),
             ProductDetailsScreen.routeName: (context) => ProductDetailsScreen(),
             CartScreen.routeName: (context) => CartScreen(),
             OrdersScreen.routeName: (context) => OrdersScreen(),

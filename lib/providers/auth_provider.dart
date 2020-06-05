@@ -92,7 +92,7 @@ class AuthProvider with ChangeNotifier {
 
     _token = extractedUserData['token'];
     _userId = extractedUserData['userId'];
-    _expiryDate = extractedUserData['expiryDate'];
+    _expiryDate = expiryDate;
     notifyListeners();
     _autoLogOut();
     return true;
@@ -105,14 +105,14 @@ class AuthProvider with ChangeNotifier {
     if (_authTimer != null) {
       _authTimer.cancel();
     }
-    notifyListeners();
     final prefs = await SharedPreferences.getInstance();
     prefs.clear();
+    notifyListeners();
   }
 
   void _autoLogOut() {
     if (_authTimer != null) {
-      _authTimer..cancel();
+      _authTimer.cancel();
     }
     final _timeToExpiry = _expiryDate.difference(DateTime.now()).inSeconds;
     Timer(Duration(seconds: _timeToExpiry), logOut);
