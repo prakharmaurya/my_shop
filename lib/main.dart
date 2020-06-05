@@ -12,6 +12,7 @@ import './screens/user_products_screen/user_products_screen.dart';
 import './screens/edit_product_screen/edit_product_screen.dart';
 import './screens/auth_screen/auth_screen.dart';
 import './providers/auth_provider.dart';
+import './screens/splash_screen.dart';
 
 void main() {
   runApp(MyApp());
@@ -58,7 +59,16 @@ class MyApp extends StatelessWidget {
             visualDensity: VisualDensity.adaptivePlatformDensity,
             fontFamily: 'Lato',
           ),
-          home: authData.isAuth ? ProductsOverviewScreen() : AuthScreen(),
+          home: authData.isAuth
+              ? ProductsOverviewScreen()
+              : FutureBuilder(
+                  future: authData.tryAutoLogin(),
+                  builder: (ctx, authResultSnapShot) =>
+                      authResultSnapShot.connectionState ==
+                              ConnectionState.waiting
+                          ? SplashScreen()
+                          : AuthScreen(),
+                ),
           routes: {
             ProductsOverviewScreen.routeName: (context) =>
                 ProductsOverviewScreen(),
