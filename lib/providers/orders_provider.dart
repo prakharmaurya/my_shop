@@ -9,7 +9,8 @@ import '../models/cart.dart';
 class OrdersProvider with ChangeNotifier {
   List<OrderItem> _orders = [];
   final String authToken;
-  OrdersProvider(this.authToken, this._orders);
+  final String uid;
+  OrdersProvider(this.authToken, this._orders, this.uid);
 
   List<OrderItem> get orders {
     return [..._orders];
@@ -17,7 +18,7 @@ class OrdersProvider with ChangeNotifier {
 
   Future<void> fetchAndSetOrders() async {
     final url =
-        'https://shop-app-f3190.firebaseio.com/orders.json?auth=$authToken';
+        'https://shop-app-f3190.firebaseio.com/users/$uid/orders.json?auth=$authToken';
     final response = await http.get(url);
     final List<OrderItem> loadedOrders = [];
     final extractedData = json.decode(response.body) as Map<String, dynamic>;
@@ -49,7 +50,7 @@ class OrdersProvider with ChangeNotifier {
 
   Future<void> addOrder(List<CartItem> cartProducts, double total) async {
     final url =
-        'https://shop-app-f3190.firebaseio.com/orders.json?auth=$authToken';
+        'https://shop-app-f3190.firebaseio.com/users/$uid/orders.json?auth=$authToken';
     final dateTime = DateTime.now();
     try {
       final res = await http.post(
