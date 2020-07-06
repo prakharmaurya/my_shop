@@ -17,28 +17,35 @@ class _OrderItemViewState extends State<OrderItemView> {
   bool _expanded = false;
   @override
   Widget build(BuildContext context) {
-    return Card(
-      margin: EdgeInsets.all(10),
-      child: Column(
-        children: [
-          ListTile(
-            title: Text('₹${widget.order.ammount}'),
-            subtitle: Text(
-              DateFormat('E-dd/MMM/yyyy-hh:mm a').format(widget.order.dateTime),
+    return AnimatedContainer(
+      duration: Duration(milliseconds: 300),
+      height:
+          _expanded ? min(widget.order.products.length * 20.0 + 112, 200) : 100,
+      child: Card(
+        margin: EdgeInsets.all(10),
+        child: Column(
+          children: [
+            ListTile(
+              title: Text('₹${widget.order.ammount}'),
+              subtitle: Text(
+                DateFormat('E-dd/MMM/yyyy-hh:mm a')
+                    .format(widget.order.dateTime),
+              ),
+              trailing: IconButton(
+                icon: Icon(_expanded ? Icons.expand_less : Icons.expand_more),
+                onPressed: () {
+                  setState(() {
+                    _expanded = !_expanded;
+                  });
+                },
+              ),
             ),
-            trailing: IconButton(
-              icon: Icon(_expanded ? Icons.expand_less : Icons.expand_more),
-              onPressed: () {
-                setState(() {
-                  _expanded = !_expanded;
-                });
-              },
-            ),
-          ),
-          if (_expanded)
-            Container(
+            AnimatedContainer(
+              duration: Duration(milliseconds: 300),
               padding: EdgeInsets.symmetric(horizontal: 15, vertical: 4),
-              height: min(widget.order.products.length * 20.0 + 25, 100),
+              height: _expanded
+                  ? min(widget.order.products.length * 20.0 + 25, 100)
+                  : 0,
               child: ListView(
                 children: widget.order.products
                     .map(
@@ -65,7 +72,8 @@ class _OrderItemViewState extends State<OrderItemView> {
                     .toList(),
               ),
             ),
-        ],
+          ],
+        ),
       ),
     );
   }
